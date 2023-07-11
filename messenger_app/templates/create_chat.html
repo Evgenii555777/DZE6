@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Group Chat</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+</head>
+<body>
+    <h2>Create Group Chat</h2>
+    <form id="createChatForm">
+        <label for="chatName">Chat Name:</label>
+        <input type="text" id="chatName" name="chatName" required>
+
+        <h3>Select Participants:</h3>
+        {% for user in users %}
+            <input type="checkbox" id="user{{ user.id }}" name="participants" value="{{ user.username }}">
+            <label for="user{{ user.id }}">{{ user.username }}</label><br>
+        {% empty %}
+            <p>No users found.</p>
+        {% endfor %}
+
+        <button type="submit">Create Chat</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Моя страница</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <style>
+        #avatar {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Список пользователей</h2>
+        <ul>
+            {% for user in users %}
+                <li>{{ user.username }}</li>
+            {% empty %}
+                <li>No users found.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Список чатов</h2>
+        <ul>
+            {% for chat in chats %}
+                <li><a href="/chat/{{ chat.id }}">{{ chat.name }}</a></li>
+            {% empty %}
+                <li>No chats found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="profile-details">
+            {% if profile.avatar %}
+                <img id="avatar" src="{{ profile.avatar.url }}" alt="Avatar">
+            {% else %}
+                <img id="avatar" src="/static/images/default-avatar.jpg" alt="Avatar">
+            {% endif %}
+            <p id="name">Имя: {{ request.user }}</p>
+        </div>
+
+
+        <form id="uploadProfilePictureForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="profilePicture" name="profilePicture" required>
+            <button class="button" type="submit">Загрузить фото</button>
+        </form>
+
+        <button id="openSendMessageModal" class="button">Отправить сообщение</button>
+
+
+        <div id="sendMessageModal" class="modal">
+
+            <div class="modal-content">
+                <span id="closeSendMessageModal" class="close">&times;</span>
+                <form id="sendMessageForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" id="recipientUsername" name="recipientUsername" placeholder="Имя получателя" required>
+                    <input type="text" id="messageText" name="messageText" placeholder="Сообщение" required>
+                    <button class="button" type="submit">Отправить сообщение</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
